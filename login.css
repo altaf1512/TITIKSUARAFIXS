@@ -1,0 +1,43 @@
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.my-custom-button {
+    width: 100%; /* Full width on small screens */
+    max-width: 200px; /* Maximum width */
+}
+
+.my-custom-button:hover {
+    background-color: #c82333; /* Darker shade on hover */
+}
+
+input::placeholder { /* Chrome/Opera/Safari */
+
+    opacity: 1; /* Fully opaque */
+    font-size: 15px; /* Placeholder font size */
+}
+
+.form-control {
+    padding: 10px; /* Add padding to input fields */
+}
+
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #ECB2B2
+    
+}
+
+.login-logo {
+    margin-bottom: 20px;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 15px;
+}
