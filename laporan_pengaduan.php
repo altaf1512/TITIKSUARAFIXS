@@ -1,26 +1,50 @@
+<?php
+session_start(); // Start session if not already started
+require_once 'config.php';
+include 'navbar.php'; // Include the navbar at the top
+
+// Perbarui query untuk mendapatkan data dengan nama status dan nama pengguna
+$query = "
+    SELECT 
+        rp.id_riwayat,
+        rp.id_pengaduan,
+        sl.nama_status AS status_lama,
+        sb.nama_status AS status_baru,
+        p.nama_lengkap AS diubah_oleh,
+        rp.catatan,
+        rp.dibuat_pada
+    FROM 
+        riwayat_pengaduan rp
+    LEFT JOIN 
+        status_pengaduan sl ON rp.status_lama = sl.id_status
+    LEFT JOIN 
+        status_pengaduan sb ON rp.status_baru = sb.id_status
+    LEFT JOIN 
+        pengguna p ON rp.diubah_oleh = p.id_pengguna
+    ORDER BY 
+        rp.dibuat_pada DESC;
+";
+
+// Eksekusi query
+$result = $conn->query($query);
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Setting</title>
+    <title>Riwayat Pengaduan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
         body {
-            background-color: #FFE4E4;
-            ;
+            background-color: #f9f9f9;
+            font-family: Arial, sans-serif;
         }
 
         .container {
             display: flex;
-            min-height: 100vh;
+            margin-left: 320px;
         }
 
         /* Sidebar Styles */
@@ -41,7 +65,7 @@
         }
 
         .logo {
-            color: #ff4757;
+            color: white;
             font-size: 24px;
             margin-bottom: 30px;
             display: flex;
@@ -70,259 +94,145 @@
             color: #ff4757;
         }
 
-
-
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-            background-color: #ffe4e4;
-        }
-
-        .stats-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background-color: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .icon-pengaduan {
+        .menu-item.active {
             background-color: #fff1f1;
             color: #ff4757;
         }
 
-        .icon-unread {
-            background-color: #fff3cd;
-            color: #ffa502;
-        }
-
-        .icon-new {
-            background-color: #d4edda;
-            color: #2ed573;
-        }
-
-        .icon-total {
-            background-color: #cce5ff;
-            color: #1e90ff;
-        }
-
-        .stat-info h3 {
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-
-        .stat-info p {
-            color: #666;
-            margin: 0;
-        }
-
-        /* Recent Reports Section - Updated for horizontal layout */
-        .recent-reports {
-            background-color: white;
+        /* Main Content */
+        .content {
+            flex: 1;
             padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 20px;
+            background-color: #f9f9f9;
         }
 
-        .recent-reports h2 {
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        .reports-container {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding-bottom: 10px;
-        }
-
-        .report-item {
-            background-color: white;
-            border-radius: 12px;
-            padding: 15px;
-            min-width: 250px;
-            border: 1px solid #eee;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .user-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 15px;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-        }
-
-        .user-details h4 {
-            color: #333;
-            margin-bottom: 4px;
-        }
-
-        .user-details p {
-            color: #666;
-            font-size: 14px;
-        }
-
-        .report-status {
-            display: block;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 14px;
-            background-color: #f8f9fa;
-            color: #666;
-            text-align: center;
-        }
-
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
-        }
-
-        .status-completed {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .status-processing {
-            background-color: #cce5ff;
-            color: #004085;
-        }
-
-        /* New Accounts Section */
-        .new-accounts {
-            background-color: white;
+        /* Table Styling */
+        .table-container {
+            background-color: #ffffff;
             padding: 20px;
-            border-radius: 12px;
-        }
-
-        .accounts-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-            margin-top: -10px;
-        }
-
-        .accounts-table tr {
-            background-color: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .accounts-table td {
-            padding: 15px;
-            border: none;
-            background-color: white;
-        }
-
-        .accounts-table tr td:first-child {
-            border-radius: 12px 0 0 12px;
-        }
-
-        .accounts-table tr td:last-child {
-            border-radius: 0 12px 12px 0;
-        }
-
-        .user-cell {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .table-user-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: #f0f0f0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-        }
-
-        .table-user-info h4 {
-            margin: 0;
-            color: #333;
-            font-size: 14px;
-        }
-
-        .table-user-info p {
-            margin: 4px 0 0 0;
-            color: #666;
-            font-size: 12px;
-        }
-
-        .status-badge {
-            padding: 6px 12px;
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            text-align: center;
-            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .status-active {
-            background-color: #d4edda;
-            color: #155724;
+        .table-container h1 {
+            margin-bottom: 20px;
+            color: #343a40;
         }
 
-        .status-pending {
-            background-color: #fff3cd;
-            color: #856404;
+        .table th {
+            background-color: #ECCBCB;
+            color: white;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                margin-left: 0;
+            }
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                border-radius: 0;
+            }
+
+            .content {
+                margin-top: 20px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="container">
-        <!-- Sidebar -->
-        <div class="sidebar">
-    <div class="logo">
-        <img src="logo.png" alt="Logo">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="Logo">
+        </div>
+        <div class="menu-item">
+            <a href="dashboard.php">Dashboard</a>
+        </div>
+        <div class="menu-item">
+            <a href="daftar_pengaduan.php">Daftar Pengaduan</a>
+        </div>
+        <div class="menu-item">
+            <a href="daftar_akun.php">Daftar Akun</a>
+        </div>
+        <div class="menu-item active">
+            <a href="riwayat_pengaduan.php">Laporan Pengaduan</a>
+        </div>
+        <div class="menu-item">
+            <a href="setting.php">Setting</a>
+        </div>
     </div>
-    <div class="menu-item">
-        <a href="dashboard.php"> Dashboard </a>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="content">
+            <div class="table-container">
+                <h1>Riwayat Pengaduan</h1>
+
+                <!-- Success/Error Messages -->
+                <?php if (isset($_SESSION['success'])): ?>
+                    <div class="alert alert-success">
+                        <?php 
+                            echo $_SESSION['success']; 
+                            unset($_SESSION['success']);
+                        ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="alert alert-danger">
+                        <?php 
+                            echo $_SESSION['error']; 
+                            unset($_SESSION['error']);
+                        ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Riwayat Pengaduan Table -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID Riwayat</th>
+                                <th>ID Pengaduan</th>
+                                <th>Status Lama</th>
+                                <th>Status Baru</th>
+                                <th>Diubah Oleh</th>
+                                <th>Catatan</th>
+                                <th>Dibuat Pada</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?php echo htmlspecialchars($row['id_riwayat']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['id_pengaduan']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['status_lama']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['status_baru']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['diubah_oleh']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['catatan']); ?></td>
+                                    <td><?php echo htmlspecialchars($row['dibuat_pada']); ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="menu-item">
-    <a href="daftar_pengaduan.php"> Daftar Pengaduan </a>
-        
-    </div>
-    <div class="menu-item">
-        <a href="daftar_akun.php"> Daftar Akun</a>
-    </div>
-    <div class="menu-item">
-    <a href="laporan_pengaduan.php"style="color:#ff4757"> Laporan Pengaduan </a>
-    </div>
-    <div class="menu-item">
-    <a href="setting.php">Setting</a>
-    </div>
-</div>
-    
+
+    <!-- Bootstrap JavaScript Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
