@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="jenis_kerusakan_array">
+        <item>Fasilitas</item>
+        <item>Peralatan</item>
+        <item>Kebersihan</item>
+        <item>Keamanan</item>
+        <item>Kenakalan Siswa</item>
+        <item>Lainnya</item>
+    </string-array>
+    <string-array name="kategori_pengaduan">
+        <item>Fasilitas</item>
+        <item>Peralatan</item>
+        <item>Kebersihan</item>
+        <item>Keamanan</item>
+        <item>Kenakalan Siswa</item>
+        <item>Lainnya</item>
+    </string-array>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Titik Suara</string>
+
+    <string-array name="kategori_array">
+        <item>Infrastruktur</item>
+        <item>Pelayanan Publik</item>
+        <item>Lingkungan</item>
+        <item>Lainnya</item>
+    </string-array>
+
+    <string name="kategori_prompt">Pilih Kategori</string>
+    <string name="status_prompt">Pilih Status</string>
+    <string name="kategori_prompt_description">Silakan pilih kategori pengaduan</string>
+    <string name="status_prompt_description">Silakan pilih status pengaduan</string>
+</resources>
