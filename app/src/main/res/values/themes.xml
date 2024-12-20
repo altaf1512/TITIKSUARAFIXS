@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Titik_Suara" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/main</item>
+        <item name="colorPrimaryVariant">@color/red</item>
+        <item name="android:statusBarColor">@color/main</item>
+    </style>
+
+    <style name="Theme.Titik_Suara" parent="Base.Theme.Titik_Suara" />
+</resources>
