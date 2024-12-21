@@ -1,15 +1,17 @@
 package com.arin.titik_suara.Fragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arin.titik_suara.Fragment.PengaduanItem;
 import com.arin.titik_suara.R;
 
 import java.text.ParseException;
@@ -43,7 +45,32 @@ public class PengaduanListAdapter extends RecyclerView.Adapter<PengaduanListAdap
         holder.tvStatus.setText("Status: " + getStatusText(item.getStatus()));
         holder.tvTanggal.setText("Dibuat: " + formatDate(item.getDibuat_pada()));
 
+        // Menambahkan click listener pada item
+        holder.itemView.setOnClickListener(v -> {
+            // Ketika card diklik, navigasi ke CobaFragment
+            CobaFragment cobaFragment = new CobaFragment();
+
+            // Membuat bundle untuk mengirimkan data ke CobaFragment
+            Bundle bundle = new Bundle();
+            bundle.putString("deskripsi", item.getDeskripsi());
+            bundle.putString("kategori", item.getKategori());
+            bundle.putString("tanggal", formatDate(item.getDibuat_pada()));
+            bundle.putInt("status", item.getStatus());
+
+            cobaFragment.setArguments(bundle);
+
+            // Pastikan context adalah FragmentActivity, lalu navigasi ke CobaFragment
+            if (context instanceof FragmentActivity) {
+                ((FragmentActivity) context).getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.frame_layout, cobaFragment)
+                        .addToBackStack(null) // Menambahkan ke backstack
+                        .commit();
+            } else {
+                Toast.makeText(context, "Context is not an instance of FragmentActivity", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
+
 
     @Override
     public int getItemCount() {

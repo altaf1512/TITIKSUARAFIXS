@@ -17,10 +17,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.arin.titik_suara.Fragment.CobaFragment;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.arin.titik_suara.Fragment.DetailPengaduanFragment;
-import com.arin.titik_suara.Fragment.EditPengaduanFragment;
 import com.arin.titik_suara.Model.PengaduanModel;
 import com.arin.titik_suara.R;
 
@@ -84,7 +84,7 @@ public class MyPengaduanAdapter extends RecyclerView.Adapter<MyPengaduanAdapter.
             // Edit button click listener
             btnEditPengaduan.setOnClickListener(v1 -> {
                 dialog.dismiss();
-                navigateToFragment(new EditPengaduanFragment(), currentPengaduan);
+                navigateToFragment(new CobaFragment(), currentPengaduan);
             });
 
             // Detail button click listener

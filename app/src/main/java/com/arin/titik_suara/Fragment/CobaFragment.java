@@ -36,6 +36,7 @@ public class CobaFragment extends Fragment {
     private ImageView imagePreview;
     private Uri imageUri;
     private Button btnPilihGambar, btnKirim;
+    private ProgressBar progressBar; // Added ProgressBar for loading feedback
 
     private String[] kategoriArray = {"Fasilitas", "Peralatan", "Kebersihan", "Keamanan", "Kenakalan Siswa", "Lainnya"};
 
@@ -49,6 +50,7 @@ public class CobaFragment extends Fragment {
         imagePreview = view.findViewById(R.id.imagePreview);
         btnPilihGambar = view.findViewById(R.id.btnPilihGambar);
         btnKirim = view.findViewById(R.id.btnKirim);
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, kategoriArray);
         spinnerKategori.setAdapter(adapter);
@@ -95,16 +97,26 @@ public class CobaFragment extends Fragment {
             byte[] imageBytes = byteArrayOutputStream.toByteArray();
             String encodedImage = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
 
-            String url = "http://192.168.1.21//API/post_pengaduan.php";
+            String url = "http://192.168.1.21/API/post_pengaduan.php";  // Fixed URL
 
             Map<String, String> params = new HashMap<>();
             params.put("deskripsi", deskripsi);
             params.put("kategori", kategori);
             params.put("image", encodedImage);
 
+            // Show progress bar before sending
+
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params),
-                    response -> Toast.makeText(getActivity(), "Pengaduan berhasil dikirim!", Toast.LENGTH_SHORT).show(),
-                    error -> Toast.makeText(getActivity(), "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show());
+                    response -> {
+                        // Hide progress bar after response
+
+                        Toast.makeText(getActivity(), "Pengaduan berhasil dikirim!", Toast.LENGTH_SHORT).show();
+                    },
+                    error -> {
+                        // Hide progress bar on error
+
+                        Toast.makeText(getActivity(), "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
 
             Volley.newRequestQueue(getActivity()).add(request);
         } catch (IOException e) {
