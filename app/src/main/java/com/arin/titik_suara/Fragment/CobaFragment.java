@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.arin.titik_suara.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -36,7 +39,6 @@ public class CobaFragment extends Fragment {
     private ImageView imagePreview;
     private Uri imageUri;
     private Button btnPilihGambar, btnKirim;
-    private ProgressBar progressBar; // Added ProgressBar for loading feedback
 
     private String[] kategoriArray = {"Fasilitas", "Peralatan", "Kebersihan", "Keamanan", "Kenakalan Siswa", "Lainnya"};
 
@@ -50,7 +52,6 @@ public class CobaFragment extends Fragment {
         imagePreview = view.findViewById(R.id.imagePreview);
         btnPilihGambar = view.findViewById(R.id.btnPilihGambar);
         btnKirim = view.findViewById(R.id.btnKirim);
-
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, kategoriArray);
         spinnerKategori.setAdapter(adapter);
@@ -77,50 +78,62 @@ public class CobaFragment extends Fragment {
     }
 
     private void kirimPengaduan() {
-        String deskripsi = etDeskripsi.getText().toString().trim();
+        String url = "http://192.168.1.21/API/post_pengaduan.php"; // Pastikan URL valid
+
+        String deskripsi = etDeskripsi.getText().toString();
         String kategori = spinnerKategori.getSelectedItem().toString();
 
-        if (TextUtils.isEmpty(deskripsi)) {
-            Toast.makeText(getActivity(), "Deskripsi wajib diisi", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(deskripsi) || imageUri == null) {
+            Toast.makeText(getContext(), "Deskripsi dan gambar wajib diisi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (imageUri == null) {
-            Toast.makeText(getActivity(), "Pilih gambar terlebih dahulu", Toast.LENGTH_SHORT).show();
+        String imageBase64 = encodeImageToBase64(imageUri);
+        if (imageBase64 == null) {
+            Toast.makeText(getContext(), "Gagal mengonversi gambar!", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        Map<String, String> params = new HashMap<>();
+        params.put("deskripsi", deskripsi);
+        params.put("kategori", kategori);
+        params.put("bukti_pengaduan", imageBase64);  // Mengganti image menjadi bukti_pengaduan
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params),
+                response -> {
+                    try {
+                        String status = response.getString("status");
+                        String message = response.getString("message");
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Kesalahan parsing respons JSON", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    if (error.networkResponse != null && error.networkResponse.data != null) {
+                        String errorMessage = new String(error.networkResponse.data);
+                        Toast.makeText(getContext(), "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Kesalahan koneksi atau respon null", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        Volley.newRequestQueue(getContext()).add(request);
+    }
+
+
+
+    private String encodeImageToBase64(Uri imageUri) {
         try {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), imageUri);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-            byte[] imageBytes = byteArrayOutputStream.toByteArray();
-            String encodedImage = android.util.Base64.encodeToString(imageBytes, android.util.Base64.DEFAULT);
-
-            String url = "http://192.168.1.21/API/post_pengaduan.php";  // Fixed URL
-
-            Map<String, String> params = new HashMap<>();
-            params.put("deskripsi", deskripsi);
-            params.put("kategori", kategori);
-            params.put("image", encodedImage);
-
-            // Show progress bar before sending
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(params),
-                    response -> {
-                        // Hide progress bar after response
-
-                        Toast.makeText(getActivity(), "Pengaduan berhasil dikirim!", Toast.LENGTH_SHORT).show();
-                    },
-                    error -> {
-                        // Hide progress bar on error
-
-                        Toast.makeText(getActivity(), "Terjadi kesalahan: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-
-            Volley.newRequestQueue(getActivity()).add(request);
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            byte[] imageBytes = outputStream.toByteArray();
+            return Base64.encodeToString(imageBytes, Base64.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 }
