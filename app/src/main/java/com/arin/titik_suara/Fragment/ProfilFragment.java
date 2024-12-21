@@ -65,7 +65,7 @@ public class ProfilFragment extends Fragment {
 
     private void loadProfileData() {
         // Get user data from SharedPreferences
-        String namaLengkap = sharedPreferences.getString("nama_lengkap", "");
+        String namaLengkap = sharedPreferences.getString("username", "");
         String jabatan = sharedPreferences.getString("jabatan", "");
         String fotoProfile = sharedPreferences.getString("foto_profil", "");
 

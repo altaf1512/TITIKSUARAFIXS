@@ -47,6 +47,7 @@
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
                     android:background="@android:color/white"
+
                     android:layout_margin="8dp"
                     android:layout_marginBottom="16dp" />
             </androidx.cardview.widget.CardView>
@@ -67,6 +68,7 @@
                     android:hint="Deskripsi pengaduan"
                     android:inputType="textMultiLine"
                     android:lines="4"
+                    android:textColor="@color/black"
                     android:gravity="top|start"
                     android:layout_margin="8dp"
                     android:background="@android:color/white" />

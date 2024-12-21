@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                 editor.putBoolean("login", true); // Save login status as true
                                 editor.putString("username", username); // Save the username (or other data as needed)
+                                editor.putString("jabatan", "User");
                                 editor.apply();
 
                                 // Pindah ke MainActivity
