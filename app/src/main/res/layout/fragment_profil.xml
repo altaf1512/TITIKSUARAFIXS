@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main"
+    android:background="@drawable/backgroundpink"
     tools:context=".Fragment.ProfilFragment">
 
     <RelativeLayout
@@ -25,13 +25,12 @@
             android:textSize="@dimen/_13sdp"
             android:text="Profil"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="100.00dp"
-            android:orientation="vertical"
-            android:background="@drawable/container_login"
-            android:padding="19.50dp"
-            android:layout_height="match_parent">
+            android:background="@drawable/bg4"
+            android:orientation="vertical">
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -54,51 +53,51 @@
                 android:id="@+id/profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nama Lengkap"
-                android:fontFamily="@font/popmed"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/popmed"
+                android:text="Nama Lengkap"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
 
             <TextView
                 android:id="@+id/profile_jabatan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Jabatan: -"
-                android:fontFamily="@font/popmed"
-                android:textSize="14sp"
-                android:textColor="@color/black"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"/> <!-- Jarak ditambahkan di sini -->
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/popmed"
+                android:text="Jabatan: -"
+                android:textColor="@color/black"
+                android:textSize="14sp" /> <!-- Jarak ditambahkan di sini -->
 
-<!--            <Button-->
-<!--                android:id="@+id/btnChangePassword"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Ubah Password"-->
-<!--                android:fontFamily="@font/popmed"-->
-<!--                android:layout_marginTop="110dp"-->
-<!--                android:layout_marginBottom="18dp"-->
-<!--                android:backgroundTint="@color/red"-->
-<!--                android:textColor="@color/white"/>-->
+            <!--            <Button-->
+            <!--                android:id="@+id/btnChangePassword"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="Ubah Password"-->
+            <!--                android:fontFamily="@font/popmed"-->
+            <!--                android:layout_marginTop="110dp"-->
+            <!--                android:layout_marginBottom="18dp"-->
+            <!--                android:backgroundTint="@color/red"-->
+            <!--                android:textColor="@color/white"/>-->
 
             <TextView
                 android:id="@+id/btnLogout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="33dp"
                 android:layout_gravity="center"
-                android:text="Keluar"
-                android:fontFamily="@font/popmed"
+                android:layout_marginBottom="1000dp"
+                android:clickable="true"
                 android:drawableStart="@drawable/ic_exit"
                 android:drawablePadding="8dp"
+                android:fontFamily="@font/popmed"
+                android:text="Keluar"
                 android:textColor="@color/red"
-                android:textSize="18sp"
-                android:layout_marginBottom="1000dp"
-                android:clickable="true"/>
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/camera_icon"
@@ -110,6 +109,6 @@
                 android:src="@drawable/ic_camera"
                 app:tint="@color/red" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
     </RelativeLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

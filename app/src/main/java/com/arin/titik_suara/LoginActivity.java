@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
-    private static final String URL_LOGIN = "http://192.168.1.21/API/login.php"; // Ganti dengan URL API login Anda
+    private static final String URL_LOGIN = "http://192.168.1.7/API/login.php"; // Ganti dengan URL API login Anda
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -78,7 +78,7 @@ public class CobaFragment extends Fragment {
     }
 
     private void kirimPengaduan() {
-        String url = "http://192.168.1.21/API/post_pengaduan.php"; // Pastikan URL valid
+        String url = "http://192.168.1.7/API/post_pengaduan.php"; // Pastikan URL valid
 
         String deskripsi = etDeskripsi.getText().toString();
         String kategori = spinnerKategori.getSelectedItem().toString();

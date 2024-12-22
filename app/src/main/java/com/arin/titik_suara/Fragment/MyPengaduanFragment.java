@@ -69,7 +69,7 @@ public class MyPengaduanFragment extends Fragment {
     private void fetchData() {
         progressDialog.show();
 
-        String url = "http://192.168.1.21/API/get_pengaduan.php";
+        String url = "http://192.168.1.7/API/get_pengaduan.php";
 
         JsonArrayRequest request = new JsonArrayRequest(
                 Request.Method.GET,

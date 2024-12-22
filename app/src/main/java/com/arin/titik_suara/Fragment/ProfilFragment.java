@@ -65,8 +65,8 @@ public class ProfilFragment extends Fragment {
 
     private void loadProfileData() {
         // Get user data from SharedPreferences
-        String namaLengkap = sharedPreferences.getString("username", "");
-        String jabatan = sharedPreferences.getString("jabatan", "");
+        String namaLengkap = sharedPreferences.getString("nama_lengkap", "");
+        String jabatan = sharedPreferences.getString("peran", "");
         String fotoProfile = sharedPreferences.getString("foto_profil", "");
 
         // Set the data to views
@@ -110,21 +110,10 @@ public class ProfilFragment extends Fragment {
         }
     }
 
-//    private void showChangePasswordDialog() {
-//        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(getContext());
-//        View view = getLayoutInflater().inflate(R.layout.dialog_change_password, null);
-//        builder.setView(view);
-//        builder.setPositiveButton("Ubah", (dialog, which) -> {
-//            // Password change logic
-//        });
-//        builder.setNegativeButton("Batal", (dialog, which) -> dialog.dismiss());
-//        builder.show();
-//    }
 
     private void setupClickListeners() {
         cameraIcon.setOnClickListener(v -> openGallery());
         btnLogout.setOnClickListener(v -> showLogoutConfirmationDialog());
-//        btnChangePassword.setOnClickListener(v -> showChangePasswordDialog());
     }
 
     private void showLogoutConfirmationDialog() {

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:id="@+id/fragment_coba"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@drawable/bg3"
     >
 
     <ScrollView
@@ -47,7 +47,6 @@
                     android:layout_height="wrap_content"
                     android:spinnerMode="dropdown"
                     android:background="@android:color/white"
-
                     android:layout_margin="8dp"
                     android:layout_marginBottom="16dp" />
             </androidx.cardview.widget.CardView>

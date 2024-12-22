@@ -46,7 +46,7 @@ public class DashboardFragment extends Fragment {
         sharedPreferences = getContext().getSharedPreferences("user_data", Context.MODE_PRIVATE);
 
         // Set username as greeting
-        String username = sharedPreferences.getString("username", "User");
+        String username = sharedPreferences.getString("nama_lengkap", "");
         tvUsername.setText("Halo " + username);
 
         // Initialize the ViewPager2 for the image slider

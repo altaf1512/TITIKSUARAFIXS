@@ -13,4 +13,5 @@
     <string name="status_prompt">Pilih Status</string>
     <string name="kategori_prompt_description">Silakan pilih kategori pengaduan</string>
     <string name="status_prompt_description">Silakan pilih status pengaduan</string>
+
 </resources>

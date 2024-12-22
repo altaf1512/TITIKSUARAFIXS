@@ -4,24 +4,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
+    android:layout_margin="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/gray"
-        >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:background="@color/gray">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/tv_deskripsi"
@@ -29,21 +20,21 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/tv_kategori"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textColor="@color/black"/>
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/tv_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textColor="@color/black"/>
+            android:textColor="@android:color/black"/>
 
         <TextView
             android:id="@+id/tv_tanggal"
@@ -51,18 +42,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:textStyle="italic"
-            android:textColor="@color/black"/>
-
-<!--        <Button-->
-<!--            android:id="@+id/btn_edit"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Hapus"-->
-
-<!--            />-->
-    </LinearLayout>
+            android:textColor="@android:color/black"/>
 
     </LinearLayout>
-
 
 </androidx.cardview.widget.CardView>
